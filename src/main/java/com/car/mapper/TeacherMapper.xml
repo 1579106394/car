@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.mapper.TeacherMapper">
+
+    <resultMap id="Teacher" type="teacher">
+        <id column="teacher_id" property="teacherId"/>
+        <result column="teacher_name" property="teacherName"/>
+        <result column="teacher_age" property="teacherAge"/>
+        <result column="teacher_telephone" property="teacherTelephone"/>
+        <result column="teacher_photo" property="teacherPhoto"/>
+        <result column="teacher_number" property="teacherNumber"/>
+        <association property="car" javaType="car">
+            <id column="car_id" property="carId" />
+            <result column="car_num" property="carNum" />
+            <result column="car_name" property="carName" />
+        </association>
+    </resultMap>
+
+    <select id="getTeacherList" parameterType="page" resultMap="Teacher">
+        select * from teacher left join car on teacher_car=car_id
+        <where>
+            <if test="params!=null">
+                <if test="params.teacherName!=null and params.teacherName!=''">
+                    and teacher_name like '%${params.teacherName}%'
+                </if>
+                <if test="params.teacherNumber!=null and params.teacherNumber!=''">
+                    and teacher_number like '%${params.teacherNumber}%'
+                </if>
+            </if>
+        </where>
+        limit #{index},#{currentCount}
+    </select>
+
+    <select id="getTeacherCount" parameterType="page" resultType="Integer">
+        select count(*) from teacher left join car on teacher_car=car_id
+        <where>
+            <if test="params!=null">
+                <if test="params.teacherName!=null and params.teacherName!=''">
+                    and teacher_name like '%${params.teacherName}%'
+                </if>
+                <if test="params.teacherNumber!=null and params.teacherNumber!=''">
+                    and teacher_number like '%${params.teacherNumber}%'
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <insert id="addTeacher" parameterType="teacher">
+        insert into teacher values (
+        #{teacherId},#{teacherName},#{teacherAge},#{teacherTelephone},
+        #{teacherPhoto},#{car.carId},#{teacherNumber}
+        )
+    </insert>
+
+    <select id="getTeacherById" resultMap="Teacher">
+        select * from teacher left join car on teacher_car=car_id
+        where teacher_id=#{value}
+    </select>
+
+    <update id="updateTeacher" parameterType="teacher">
+        update teacher set
+        teacher_name=#{teacherName}
+        ,teacher_age=#{teacherAge}
+        ,teacher_telephone=#{teacherTelephone}
+        ,teacher_photo=#{teacherPhoto}
+        ,teacher_car=#{car.carId}
+        ,teacher_number=#{teacherNumber}
+        where teacher_id=#{teacherId}
+    </update>
+
+    <delete id="deleteById">
+        delete from teacher where teacher_id=#{value}
+    </delete>
+
+</mapper>

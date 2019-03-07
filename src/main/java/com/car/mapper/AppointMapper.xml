@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.mapper.AppointMapper">
+
+    <resultMap id="Appoint" type="appoint">
+        <id column="appoint_id" property="appointId"/>
+        <result column="appoint_start_date" property="appointStartDate"/>
+        <result column="appoint_end_date" property="appointEndDate"/>
+        <association property="user" javaType="user">
+            <id column="user_id" property="userId"/>
+            <result column="username" property="username"/>
+            <result column="password" property="password"/>
+            <result column="user_name" property="userName"/>
+            <result column="user_gender" property="userGender"/>
+            <result column="user_age" property="userAge"/>
+            <result column="user_telephone" property="userTelephone"/>
+            <result column="user_number" property="userNumber"/>
+            <result column="user_time" property="userTime"/>
+            <result column="user_state" property="userState"/>
+            <result column="user_role" property="userRole"/>
+        </association>
+        <association property="teacher" javaType="teacher">
+            <id column="teacher_id" property="teacherId"/>
+            <result column="teacher_name" property="teacherName"/>
+            <result column="teacher_age" property="teacherAge"/>
+            <result column="teacher_telephone" property="teacherTelephone"/>
+            <result column="teacher_photo" property="teacherPhoto"/>
+        </association>
+    </resultMap>
+
+    <select id="getByTime" parameterType="appoint" resultMap="Appoint">
+        select * from appoint
+        where appoint_teacher=#{teacher.teacherId}
+        and (
+        (appoint_start_date &lt;=#{appointStartDate} and appoint_end_date &gt;=#{appointStartDate}) or
+        (appoint_start_date &lt;= #{appointEndDate} and appoint_end_date &gt;=#{appointEndDate}) or
+        (appoint_start_date &gt;=#{appointStartDate} and appoint_end_date &lt;=#{appointEndDate})
+        )
+    </select>
+
+    <insert id="addAppoint" parameterType="appoint">
+        insert into appoint values
+        (
+        #{appointId},#{user.userId},#{teacher.teacherId},
+        #{appointStartDate},#{appointEndDate}
+        )
+    </insert>
+
+    <select id="getAppointList" parameterType="page" resultMap="Appoint">
+        select * from appoint inner join teacher on appoint_teacher = teacher_id
+        inner join user on appoint_user = user_id
+        <where>
+            <if test="params!=null">
+                <if test="params.userId!=null and params.userId !=''">
+                    and user_id=#{params.userId}
+                </if>
+                <if test="params.teacherName!=null and params.teacherName !=''">
+                    and teacher_name=#{params.teacherName}
+                </if>
+                <if test="params.userName!=null and params.userName !=''">
+                    and user_name=#{params.userName}
+                </if>
+            </if>
+        </where>
+        limit #{index}, #{currentCount}
+    </select>
+
+    <select id="getAppointCount" parameterType="page" resultType="Integer">
+        select count(appoint_id) from appoint inner join teacher on appoint_teacher = teacher_id
+        inner join user on appoint_user = user_id
+        <where>
+            <if test="params!=null">
+                <if test="params.userId!=null and params.userId !=''">
+                    and user_id=#{params.userId}
+                </if>
+                <if test="params.teacherName!=null and params.teacherName !=''">
+                    and teacher_name=#{params.teacherName}
+                </if>
+                <if test="params.userName!=null and params.userName !=''">
+                    and user_name=#{params.userName}
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteAppointById">
+        delete from appoint where appoint_id=#{value}
+    </delete>
+
+    <select id="getAppointById" resultMap="Appoint">
+        select * from appoint where appoint_id=#{value}
+    </select>
+
+</mapper>

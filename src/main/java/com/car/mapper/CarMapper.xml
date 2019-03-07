@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.mapper.CarMapper">
+
+    <resultMap id="Car" type="car">
+        <id column="car_id" property="carId"/>
+        <result column="car_num" property="carNum"/>
+        <result column="car_name" property="carName"/>
+        <result column="car_flag" property="carFlag"/>
+    </resultMap>
+
+    <insert id="addCar" parameterType="car">
+        insert into car(car_id, car_name, car_num, car_flag) values
+        (#{carId}, #{carName}, #{carNum}, 1)
+    </insert>
+
+    <select id="getCarList" parameterType="page" resultMap="Car">
+        select * from car
+        <where>
+            <if test="search!=null and search!=''">
+                car_name like '%${search}%'
+            </if>
+        </where>
+        limit #{index}, #{currentCount}
+    </select>
+
+    <select id="getCarCount" parameterType="page" resultType="Integer">
+        select count(*) from car
+        <where>
+            <if test="search!=null and search!=''">
+                car_name like '%${search}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getCarById" resultMap="Car">
+        select * from car where car_id = #{value}
+    </select>
+
+    <update id="updateCar" parameterType="car">
+        update car set
+        car_name=#{carName}
+        ,car_num=#{carNum}
+        ,car_flag=#{carFlag}
+        where car_id=#{carId}
+    </update>
+
+    <delete id="deleteCarById">
+        delete from car
+        where car_id = #{value}
+    </delete>
+
+    <select id="getCarListNotTeacher" resultMap="Car">
+        select * from car where car_flag = 1
+    </select>
+
+</mapper>

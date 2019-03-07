@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.mapper.UserMapper">
+
+    <resultMap id="User" type="user">
+        <id column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_gender" property="userGender"/>
+        <result column="user_age" property="userAge"/>
+        <result column="user_telephone" property="userTelephone"/>
+        <result column="user_number" property="userNumber"/>
+        <result column="user_time" property="userTime"/>
+        <result column="user_state" property="userState"/>
+        <result column="user_role" property="userRole"/>
+    </resultMap>
+
+    <select id="getUserByUsername" resultMap="User">
+        select * from user where username=#{value}
+    </select>
+
+    <select id="getMaxNumberByNow" resultType="String">
+        select max(user_number) from  user where user_number like '%${value}%'
+    </select>
+
+    <insert id="insertUser" parameterType="user">
+        insert into user values (
+        #{userId},#{username},#{password},#{userName},
+        #{userGender},#{userAge},#{userTelephone},
+        #{userNumber},#{userTime},#{userState},#{userRole}
+        )
+    </insert>
+
+    <select id="getUserList" parameterType="page" resultMap="User">
+        select * from user
+        where user_role=1
+        <if test="params!=null">
+            <if test="params.userNumber!=null and params.userNumber!=''">
+                and user_number like '%${params.userNumber}%'
+            </if>
+            <if test="params.userName!=null and params.userName!=''">
+                and user_name like '%${params.userName}%'
+            </if>
+            <if test="params.username!=null and params.username!=''">
+                and username like '%${params.username}%'
+            </if>
+            <if test="params.userState!=null and params.userState!=''">
+                and user_state=#{params.userState}
+            </if>
+        </if>
+        limit #{index},#{currentCount}
+    </select>
+
+    <select id="getUserCount" parameterType="page" resultType="Integer">
+        select count(*) from user
+        where user_role=1
+        <if test="params!=null">
+            <if test="params.userNumber!=null and params.userNumber!=''">
+                and user_number like '%${params.userNumber}%'
+            </if>
+            <if test="params.userName!=null and params.userName!=''">
+                and user_name like '%${params.userName}%'
+            </if>
+            <if test="params.username!=null and params.username!=''">
+                and username like '%${params.username}%'
+            </if>
+            <if test="params.userState!=null and params.userState!=''">
+                and user_state=#{params.userState}
+            </if>
+        </if>
+    </select>
+
+    <select id="getUserByTelephone" resultMap="User">
+        select * from user where user_telephone=#{value} limit 1
+    </select>
+
+    <select id="getUserById" resultMap="User">
+        select * from user where user_id = #{value}
+    </select>
+
+    <select id="updateUser" parameterType="user">
+        update user set
+        username=#{username}
+        ,password=#{password}
+        ,user_name=#{userName}
+        ,user_gender=#{userGender}
+        ,user_age=#{userAge}
+        ,user_telephone=#{userTelephone}
+        <if test="userTime!=null and userTime!=''">
+            ,user_time=#{userTime}
+        </if>
+        <if test="userState!=null and userState!=''">
+            ,user_state=#{userState}
+        </if>
+        where user_id=#{userId}
+    </select>
+
+    <select id="deleteById">
+        delete from user where user_id=#{value}
+    </select>
+
+</mapper>
