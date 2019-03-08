@@ -196,12 +196,38 @@ public class UserController {
     /**
      * 通过考试
      */
-    @RequestMapping("adopt{userId}.html")
+    @RequestMapping("adopt/{userId}.html")
     public String adopt(@PathVariable String userId) {
         User u = userService.getUserById(userId);
         u.setUserState(2);
         userService.updateUser(u);
         return "redirect:/api/user/userList.html";
     }
+
+
+    /**
+     * 获取我的信息，跳转到我的信息页面
+     * @param model
+     * @return
+     */
+    @RequestMapping("myInfo.html")
+    public String myInfo(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("user", user);
+        return "/user/myInfo";
+    }
+
+    /**
+     * 修改个人信息
+     * @param user
+     * @return
+     */
+    @RequestMapping("updateMyInfo.html")
+    public String updateMyInfo(User user, HttpSession session) {
+        userService.updateUser(user);
+        session.removeAttribute("user");
+        return "redirect:/login.jsp";
+    }
+
 
 }

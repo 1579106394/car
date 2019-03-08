@@ -11,7 +11,7 @@ public class IndexController {
      */
     @RequestMapping("/index.html")
     public String index() {
-        return "redirect:/api/car/carList.html";
+        return "redirect:/api/teacher/teacherList.html";
     }
 
 }

@@ -48,7 +48,7 @@ public class AppointController {
      * 新增预约
      */
     @RequestMapping("addAppoint.html")
-    public String addApoint(Appoint appoint, Model model, HttpSession session) {
+    public String addApoint(Appoint appoint, Model model, HttpSession session) throws ParseException {
         String startDate = appoint.getAppointStartDate();
         Teacher teacher = teacherService.getTeacherById(appoint.getTeacher().getTeacherId());
         if (StringUtils.isBlank(startDate)) {
@@ -60,8 +60,9 @@ public class AppointController {
         appoint.setAppointStartDate(split[0]);
         appoint.setAppointEndDate(split[1]);
         User user = (User) session.getAttribute("user");
-        if (user.getUserTime() <= 0) {
-            // 用户学时用完
+        Integer hour = DateUtils.getHour(appoint.getAppointStartDate(), appoint.getAppointEndDate());
+        if (user.getUserTime() < hour) {
+            // 用户不够
             model.addAttribute("teacher", teacher);
             model.addAttribute("error", "您的学时不足，请及时充值！");
             return "/appoint/addAppoint";

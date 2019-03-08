@@ -96,4 +96,9 @@ public class CarServiceImpl implements CarService {
     public List<Car> getCarListNotTeacher() {
         return carMapper.getCarListNotTeacher();
     }
+
+    @Override
+    public Car getByName(String carName) {
+        return carMapper.getByName(carName);
+    }
 }

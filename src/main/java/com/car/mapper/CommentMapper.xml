@@ -40,9 +40,6 @@
         inner join teacher on comment_teacher = teacher_id
         inner join user on comment_user = user_id
         <where>
-            <if test="params.userId != null and params.userId != ''">
-                and comment_user=#{params.userId}
-            </if>
             <if test="params.teacherId != null and params.teacherId != ''">
                 and comment_teacher=#{params.teacherId}
             </if>
@@ -64,9 +61,6 @@
         inner join teacher on comment_teacher = teacher_id
         inner join user on comment_user = user_id
         <where>
-            <if test="params.userId != null and params.userId != ''">
-                and comment_user=#{params.userId}
-            </if>
             <if test="params.teacherId != null and params.teacherId != ''">
                 and comment_teacher=#{params.teacherId}
             </if>

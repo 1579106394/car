@@ -54,4 +54,8 @@
         select * from car where car_flag = 1
     </select>
 
+    <select id="getByName" resultMap="Car">
+        select * from car where car_name=#{value}
+    </select>
+
 </mapper>

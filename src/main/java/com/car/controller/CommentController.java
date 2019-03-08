@@ -59,10 +59,6 @@ public class CommentController{
      */
     @RequestMapping(value = "commentList.html")
     public String commentList(Page<Comment> page, Model model, HttpSession session, String teacherId) {
-        User user = (User) session.getAttribute("user");
-        if(user.getUserRole()!=2){
-            page.getParams().put("userId", user.getUserId());
-        }
         if(StringUtils.isNoneBlank(teacherId)) {
             page.getParams().put("teacherId", teacherId);
         }

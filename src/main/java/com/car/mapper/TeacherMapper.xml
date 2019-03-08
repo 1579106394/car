@@ -24,7 +24,7 @@
                     and teacher_name like '%${params.teacherName}%'
                 </if>
                 <if test="params.teacherNumber!=null and params.teacherNumber!=''">
-                    and teacher_number like '%${params.teacherNumber}%'
+                    and teacher_number = #{params.teacherNumber}
                 </if>
             </if>
         </where>
@@ -39,7 +39,7 @@
                     and teacher_name like '%${params.teacherName}%'
                 </if>
                 <if test="params.teacherNumber!=null and params.teacherNumber!=''">
-                    and teacher_number like '%${params.teacherNumber}%'
+                    and teacher_number = #{params.teacherNumber}
                 </if>
             </if>
         </where>

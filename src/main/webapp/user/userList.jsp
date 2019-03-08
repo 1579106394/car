@@ -38,6 +38,15 @@
                 layer.close(index);
             });
         }
+        /**
+         * 通过考试
+         */
+        function adopt(id) {
+            layer.confirm('确定通过考试吗?', {icon: 1, title:'提示'}, function(index){
+                window.location.href="${pageContext.request.contextPath}/api/user/adopt/"+id+".html"
+                layer.close(index);
+            });
+        }
 
         function deleteMany() {
             layer.confirm('确定删除这些吗?', {icon: 2, title:'提示'}, function(index){
@@ -153,7 +162,8 @@
                                             <a class="layui-btn layui-btn-xs layui-btn-warm" href="${pageContext.request.contextPath}/api/user/toRecharge/${user.userId}.html">
                                                 <i class="layui-icon">&#xe65e;</i>充值学时
                                             </a>
-                                            <a class="layui-btn layui-btn-xs layui-btn-normal" href="${pageContext.request.contextPath}/api/user/adopt/${user.userId}.html">
+                                            <a class="layui-btn layui-btn-xs layui-btn-normal" href="javascript:void(0)"
+                                               onclick="adopt('${user.userId}')">
                                                 <i class="layui-icon">&#xe605;</i>通过考试
                                             </a>
                                         </div>

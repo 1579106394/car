@@ -34,7 +34,12 @@ public class CarController {
      * @return
      */
     @RequestMapping("addCar.html")
-    public String addCar(Car car) {
+    public String addCar(Car car, Model model) {
+        Car c = carService.getByName(car.getCarName());
+        if(c!=null) {
+            model.addAttribute("error", "车牌号已存在！");
+            return "/car/addCar";
+        }
         carService.addCar(car);
         return "redirect:/api/car/carList.html";
     }

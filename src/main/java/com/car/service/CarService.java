@@ -44,4 +44,11 @@ public interface CarService {
      * @return
      */
     List<Car> getCarListNotTeacher();
+
+    /**
+     * 根据车辆名查询
+     * @param carName
+     * @return
+     */
+    Car getByName(String carName);
 }

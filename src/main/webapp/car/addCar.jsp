@@ -40,7 +40,12 @@
                                        autocomplete="off" class="layui-input">
                             </div>
                         </div>
-
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-block">
+                                <span style="color: red;">${error}</span>
+                            </div>
+                        </div>
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
