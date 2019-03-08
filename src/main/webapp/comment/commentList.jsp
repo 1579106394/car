@@ -134,11 +134,13 @@
                                     <td>${comment.commentTime}</td>
                                     <td class="text-center">
                                         <div class="layui-btn-group">
-                                            <a class="layui-btn layui-btn-xs layui-btn-danger"
-                                               href="javascript:void(0)"
-                                               onclick="deleteComment('${comment.commentId}')">
-                                                <i class="layui-icon">&#xe640;</i>删除
-                                            </a>
+                                            <c:if test="${sessionScope.user.userId==comment.user.userId or sessionScope.user.userRole==2}">
+                                                <a class="layui-btn layui-btn-xs layui-btn-danger"
+                                                   href="javascript:void(0)"
+                                                   onclick="deleteComment('${comment.commentId}')">
+                                                    <i class="layui-icon">&#xe640;</i>删除
+                                                </a>
+                                            </c:if>
                                             <c:if test="${sessionScope.user.userRole==1}">
                                                 <a class="layui-btn layui-btn-xs"
                                                    href="${pageContext.request.contextPath}/api/comment/toEditComment/${comment.commentId}.html">

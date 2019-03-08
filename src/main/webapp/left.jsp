@@ -23,8 +23,7 @@
             </li>
             <li class="layui-nav-item">
                 <a href="${pageContext.request.contextPath}/api/comment/commentList.html">
-                    <c:if test="${sessionScope.user.userRole==2}">评论管理</c:if>
-                    <c:if test="${sessionScope.user.userRole!=2}">我的评论</c:if>
+                    评论管理
                 </a>
             </li>
             <c:if test="${sessionScope.user.userRole==2}">

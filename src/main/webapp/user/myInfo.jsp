@@ -77,6 +77,13 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
+                            <label class="layui-form-label">剩余学时</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="userTelephone" required lay-verify="required" placeholder="剩余学时"
+                                       autocomplete="off" class="layui-input" value="${user.userTime}小时" readonly>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
                             <label class="layui-form-label"></label>
                             <div class="layui-input-block">
                                 <span style="color: red;">${error}</span>
